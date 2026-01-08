@@ -7,3 +7,14 @@ generator client {
 datasource db {
   provider = "postgresql"
 }
+
+model Drivers {
+  id             Int      @id @default(autoincrement())
+  plate          String   @unique
+  name           String
+  email          String   @unique
+  password       String
+  whatsappNumber String
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+}
