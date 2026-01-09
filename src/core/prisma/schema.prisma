@@ -21,6 +21,16 @@ model Drivers {
   students Students[]
 }
 
+model Parents {
+  id             Int      @id @default(autoincrement())
+  name           String
+  whatsappNumber String   @unique
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  students Students[]
+}
+
 model Students {
   id         Int     @id @default(autoincrement())
   name       String
@@ -40,4 +50,6 @@ model Students {
 
   driver   Drivers @relation(fields: [driverId], references: [id])
   driverId Int
+  parent   Parents @relation(fields: [parentId], references: [id])
+  parentId Int
 }

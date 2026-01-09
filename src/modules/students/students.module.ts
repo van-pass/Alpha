@@ -5,9 +5,10 @@ import { StudentsService } from './students.service';
 import { StudentsRepository } from './repositories/students.repository';
 import { PrismaStudentsRepository } from './repositories/prisma.students.repository';
 import { DriversModule } from '../drivers/drivers.module';
+import { ParentsModule } from '../parents/parents.module';
 
 @Module({
-  imports: [DriversModule],
+  imports: [DriversModule, ParentsModule],
   controllers: [StudentsController],
   providers: [
     StudentsService,

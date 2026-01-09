@@ -60,4 +60,10 @@ export class CreateStudentBody {
   @IsPositive({ message: 'driver id must be a positive number' })
   @Min(1, { message: 'driver id must be greater than 0' })
   driverId: number;
+
+  @IsNotEmpty({ message: 'parent id is required' })
+  @IsInt({ message: 'parent id must be an integer' })
+  @IsPositive({ message: 'parent id must be a positive number' })
+  @Min(1, { message: 'parent id must be greater than 0' })
+  parentId: number;
 }
