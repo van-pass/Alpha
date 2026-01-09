@@ -33,6 +33,6 @@ export class DriversService {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { password, ...payload } = driver;
 
-    return payload;
+    return { data: payload };
   }
 }

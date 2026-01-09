@@ -17,4 +17,27 @@ model Drivers {
   whatsappNumber String
   createdAt      DateTime @default(now())
   updatedAt      DateTime @updatedAt
+
+  students Students[]
+}
+
+model Students {
+  id         Int     @id @default(autoincrement())
+  name       String
+  monthlyFee Decimal @db.Decimal(10, 2)
+  dueDay     Int
+  isActive   Boolean @default(true)
+
+  state        String
+  city         String
+  neighborhood String
+  street       String
+  number       String
+  zipCode      String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  driver   Drivers @relation(fields: [driverId], references: [id])
+  driverId Int
 }

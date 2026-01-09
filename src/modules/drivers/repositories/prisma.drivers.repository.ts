@@ -1,7 +1,6 @@
 import { Injectable, InternalServerErrorException } from '@nestjs/common';
 
 import { PrismaService } from 'src/core/prisma/prisma.service';
-
 import { CreateDriverBody } from '../dtos/create-driver.dto';
 import { DriversRepository } from './drivers.repository';
 
@@ -34,9 +33,26 @@ export class PrismaDriversRepository implements DriversRepository {
     } catch (error) {
       console.log(error);
 
-      throw new InternalServerErrorException('Unexpected error to get driver.', {
+      throw new InternalServerErrorException('Unexpected error to find driver by email.', {
         cause: new Error(),
         description: 'PDR-GE01'
+      });
+    }
+  }
+
+  async getById(id: number) {
+    try {
+      return await this.prisma.drivers.findUnique({
+        where: {
+          id
+        }
+      });
+    } catch (error) {
+      console.log(error);
+
+      throw new InternalServerErrorException('Unexpected error to find driver by id.', {
+        cause: new Error(),
+        description: 'PDR-GI01'
       });
     }
   }

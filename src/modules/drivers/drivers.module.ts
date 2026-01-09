@@ -13,6 +13,7 @@ import { PrismaDriversRepository } from './repositories/prisma.drivers.repositor
       provide: DriversRepository,
       useClass: PrismaDriversRepository
     }
-  ]
+  ],
+  exports: [DriversRepository]
 })
 export class DriversModule {}
