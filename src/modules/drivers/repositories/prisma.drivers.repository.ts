@@ -56,4 +56,24 @@ export class PrismaDriversRepository implements DriversRepository {
       });
     }
   }
+
+  async getByWhatsapp(whatsappNumber: string) {
+    try {
+      return await this.prisma.drivers.findUnique({
+        where: {
+          whatsappNumber
+        }
+      });
+    } catch (error) {
+      console.log(error);
+
+      throw new InternalServerErrorException(
+        'Unexpected error to find driver by whatsapp number.',
+        {
+          cause: new Error(),
+          description: 'PDR-GW01'
+        }
+      );
+    }
+  }
 }

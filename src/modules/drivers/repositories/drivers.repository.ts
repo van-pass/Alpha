@@ -5,4 +5,5 @@ export abstract class DriversRepository {
   abstract create(data: CreateDriverBody): Promise<Drivers>;
   abstract getByEmail(email: string): Promise<Drivers | null>;
   abstract getById(id: number): Promise<Drivers | null>;
+  abstract getByWhatsapp(whatsappNumber: string): Promise<Drivers | null>;
 }

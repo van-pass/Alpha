@@ -14,7 +14,7 @@ model Drivers {
   name           String
   email          String   @unique
   password       String
-  whatsappNumber String
+  whatsappNumber String   @unique
   createdAt      DateTime @default(now())
   updatedAt      DateTime @updatedAt
 
