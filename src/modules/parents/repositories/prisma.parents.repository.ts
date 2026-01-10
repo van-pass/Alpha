@@ -1,14 +1,13 @@
 import { Injectable, InternalServerErrorException } from '@nestjs/common';
 
 import { PrismaService } from 'src/core/prisma/prisma.service';
-import { ParentsRepository } from './parents.repository';
-import { CreateParentBody } from '../dtos/create-parent.dto';
+import { ParentsRepository, CreateParentProps } from './parents.repository';
 
 @Injectable()
 export class PrismaParentsRepository implements ParentsRepository {
   constructor(private prisma: PrismaService) {}
 
-  async create(data: CreateParentBody) {
+  async create(data: CreateParentProps) {
     try {
       return await this.prisma.parents.create({
         data

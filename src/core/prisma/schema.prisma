@@ -23,7 +23,9 @@ model Drivers {
 
 model Parents {
   id             Int      @id @default(autoincrement())
+  customerId     String   @unique
   name           String
+  cpf            String   @unique
   whatsappNumber String   @unique
   createdAt      DateTime @default(now())
   updatedAt      DateTime @updatedAt
