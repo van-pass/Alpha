@@ -55,3 +55,24 @@ model Students {
   parent   Parents @relation(fields: [parentId], references: [id])
   parentId Int
 }
+
+enum InvoicesStatus {
+  PENDING
+  PAID
+  OVERDUE
+  MANUAL_PAID
+}
+
+model Invoices {
+  id            String         @id @default(cuid())
+  amount        Decimal        @db.Decimal(10, 2)
+  netAmount     Decimal        @db.Decimal(10, 2)
+  dueDate       DateTime
+  status        InvoicesStatus @default(PENDING)
+  url           String
+  transactionId String
+  invoiceNumber String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}

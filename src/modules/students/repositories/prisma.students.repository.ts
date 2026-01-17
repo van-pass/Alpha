@@ -22,4 +22,24 @@ export class PrismaStudentsRepository implements StudentsRepository {
       });
     }
   }
+
+  async getById(id: number) {
+    try {
+      return await this.prisma.students.findUnique({
+        where: {
+          id
+        },
+        include: {
+          parent: true
+        }
+      });
+    } catch (error) {
+      console.log(error);
+
+      throw new InternalServerErrorException('Unexpected error to find student by id.', {
+        cause: new Error(),
+        description: 'PSR-GI01'
+      });
+    }
+  }
 }

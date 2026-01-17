@@ -3,12 +3,16 @@ import { HttpService } from '@nestjs/axios';
 
 import { firstValueFrom } from 'rxjs';
 
+import { AsaasErrorResponse } from './interfaces/asaas-errors.interface';
 import {
   CreateAsaasCustomerRequest,
   AsaasCustomerResponse,
   ListAsaasCustomersResponse
 } from './interfaces/asaas-customer.interface';
-import { AsaasErrorResponse } from './interfaces/asaas-errors.interface';
+import {
+  CreateAsaasBillingRequest,
+  AsaasBillingResponse
+} from './interfaces/asaas-billing.interface';
 
 @Injectable()
 export class AsaasService {
@@ -53,6 +57,23 @@ export class AsaasService {
 
       throw new BadRequestException(
         asaasError?.errors[0]?.description || 'Unexpected error to find customer in Asaas.'
+      );
+    }
+  }
+
+  async createInvoice(payload: CreateAsaasBillingRequest): Promise<AsaasBillingResponse> {
+    try {
+      const { data } = await firstValueFrom(
+        this.httpService.post<AsaasBillingResponse>('/payments', payload)
+      );
+      return data;
+    } catch (error) {
+      console.log(error);
+
+      const asaasError = error.response?.data as AsaasErrorResponse;
+
+      throw new BadRequestException(
+        asaasError?.errors[0]?.description || 'Unexpected error to create invoice in Asaas.'
       );
     }
   }
