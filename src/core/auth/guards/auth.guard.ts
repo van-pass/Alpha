@@ -12,6 +12,12 @@ export class AuthGuard implements CanActivate {
     const request = context
       .switchToHttp()
       .getRequest<FastifyRequest & { user: RequestUserPayload }>();
+
+    const asaasToken = request.headers['asaas-access-token'];
+    if (asaasToken === process.env.ASAAS_WEBHOOK_TOKEN) {
+      return true;
+    }
+
     const token = this.extractTokenFromHeader(request);
     if (!token) {
       throw new UnauthorizedException('Authorization header not found', {

@@ -3,6 +3,8 @@ import { HttpService } from '@nestjs/axios';
 
 import { firstValueFrom } from 'rxjs';
 
+import { AsaasWebhookEvent, PaymentEventBody } from './dtos/webhook-event';
+import { InvoicesRepository } from 'src/modules/invoices/repositories/invoices.repository';
 import { AsaasErrorResponse } from './interfaces/asaas-errors.interface';
 import {
   CreateAsaasCustomerRequest,
@@ -13,10 +15,14 @@ import {
   CreateAsaasBillingRequest,
   AsaasBillingResponse
 } from './interfaces/asaas-billing.interface';
+import { InvoicesStatus } from 'src/core/prisma/generated/enums';
 
 @Injectable()
 export class AsaasService {
-  constructor(private readonly httpService: HttpService) {}
+  constructor(
+    private readonly httpService: HttpService,
+    private readonly invoicesRepository: InvoicesRepository
+  ) {}
 
   async createCustomer(payload: CreateAsaasCustomerRequest): Promise<AsaasCustomerResponse> {
     try {
@@ -74,6 +80,37 @@ export class AsaasService {
 
       throw new BadRequestException(
         asaasError?.errors[0]?.description || 'Unexpected error to create invoice in Asaas.'
+      );
+    }
+  }
+
+  async handlePaymentReceived(data: PaymentEventBody) {
+    try {
+      if (data.event !== AsaasWebhookEvent.PAYMENT_RECEIVED) {
+        return { received: true, ignored: true };
+      }
+      const result = await this.invoicesRepository.updateStatus(
+        data.payment.id,
+        InvoicesStatus.PAID
+      );
+
+      if (result.count === 0) {
+        return {
+          received: true,
+          message: 'Invoice already PAID or not found'
+        };
+      }
+
+      return {
+        received: true
+      };
+    } catch (error) {
+      console.error('Webhook Error:', error);
+
+      const asaasError = error.response?.data as AsaasErrorResponse;
+
+      throw new BadRequestException(
+        asaasError?.errors?.[0]?.description || 'Internal error processing Asaas webhook'
       );
     }
   }

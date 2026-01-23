@@ -70,7 +70,7 @@ model Invoices {
   dueDate       DateTime
   status        InvoicesStatus @default(PENDING)
   url           String
-  transactionId String
+  transactionId String         @unique
   invoiceNumber String
 
   createdAt DateTime @default(now())

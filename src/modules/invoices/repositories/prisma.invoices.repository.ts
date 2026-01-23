@@ -22,4 +22,27 @@ export class PrismaInvoicesRepository implements InvoicesRepository {
       });
     }
   }
+
+  async updateStatus(transactionId: string, status: Invoices['status']) {
+    try {
+      return await this.prisma.invoices.updateMany({
+        where: {
+          transactionId,
+          status: {
+            not: status
+          }
+        },
+        data: {
+          status
+        }
+      });
+    } catch (error) {
+      console.log(error);
+
+      throw new InternalServerErrorException('Unexpected error to mark invoice as paid.', {
+        cause: new Error(),
+        description: 'PIR-MP01'
+      });
+    }
+  }
 }
