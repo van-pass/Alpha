@@ -5,6 +5,7 @@ import { PrismaModule } from './core/prisma/prisma.module';
 import { AuthModule } from './core/auth/auth.module';
 import { DriversModule } from './modules/drivers/drivers.module';
 import { ParentsModule } from './modules/parents/parents.module';
+import { SchoolsModule } from './modules/schools/schools.module';
 import { StudentsModule } from './modules/students/students.module';
 
 @Module({
@@ -15,6 +16,7 @@ import { StudentsModule } from './modules/students/students.module';
     AuthModule,
     DriversModule,
     ParentsModule,
+    SchoolsModule,
     StudentsModule
   ]
 })
