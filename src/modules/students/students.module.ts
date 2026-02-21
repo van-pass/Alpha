@@ -16,6 +16,7 @@ import { ParentsModule } from '../parents/parents.module';
       provide: StudentsRepository,
       useClass: PrismaStudentsRepository
     }
-  ]
+  ],
+  exports: [StudentsRepository]
 })
 export class StudentsModule {}
