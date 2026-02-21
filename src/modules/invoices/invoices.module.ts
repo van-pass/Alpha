@@ -2,20 +2,13 @@ import { Module } from '@nestjs/common';
 
 import { InvoicesController } from './invoices.controller';
 import { InvoicesService } from './invoices.service';
-import { InvoicesRepository } from './repositories/invoices.repository';
-import { PrismaInvoicesRepository } from './repositories/prisma.invoices.repository';
 import { AsaasModule } from 'src/core/integrations/asaas/asaas.module';
+import { InvoicesDataModule } from './invoices-data.module';
 import { StudentsModule } from '../students/students.module';
 
 @Module({
-  imports: [AsaasModule, StudentsModule],
+  imports: [AsaasModule, InvoicesDataModule, StudentsModule],
   controllers: [InvoicesController],
-  providers: [
-    InvoicesService,
-    {
-      provide: InvoicesRepository,
-      useClass: PrismaInvoicesRepository
-    }
-  ]
+  providers: [InvoicesService]
 })
 export class InvoicesModule {}

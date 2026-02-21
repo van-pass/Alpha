@@ -7,6 +7,7 @@ import { DriversModule } from './modules/drivers/drivers.module';
 import { ParentsModule } from './modules/parents/parents.module';
 import { SchoolsModule } from './modules/schools/schools.module';
 import { StudentsModule } from './modules/students/students.module';
+import { InvoicesModule } from './modules/invoices/invoices.module';
 
 @Module({
   imports: [
@@ -17,7 +18,8 @@ import { StudentsModule } from './modules/students/students.module';
     DriversModule,
     ParentsModule,
     SchoolsModule,
-    StudentsModule
+    StudentsModule,
+    InvoicesModule
   ]
 })
 export class AppModule {}
