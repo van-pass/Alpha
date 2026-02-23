@@ -13,6 +13,12 @@ async function bootstrap() {
     })
   );
 
+  const fastify = app.getHttpAdapter().getInstance();
+
+  fastify.get('/', () => {
+    return { status: 'ok', uptime: process.uptime() };
+  });
+
   await app.listen({ host: '0.0.0.0', port: 4433 });
 }
 
