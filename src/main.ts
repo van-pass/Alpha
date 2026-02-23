@@ -13,7 +13,7 @@ async function bootstrap() {
     })
   );
 
-  await app.listen(process.env.PORT ?? 4433);
+  await app.listen({ host: '0.0.0.0', port: 4433 });
 }
 
 bootstrap();
