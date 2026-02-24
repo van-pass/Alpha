@@ -42,4 +42,21 @@ export class PrismaSchoolsRepository implements SchoolsRepository {
       );
     }
   }
+
+  async getById(id: number) {
+    try {
+      return await this.prisma.schools.findUnique({
+        where: {
+          id
+        }
+      });
+    } catch (error) {
+      console.log(error);
+
+      throw new InternalServerErrorException('Unexpected error to find school by id.', {
+        cause: new Error(),
+        description: 'PSR-GI01'
+      });
+    }
+  }
 }

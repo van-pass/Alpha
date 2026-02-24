@@ -13,6 +13,7 @@ import { PrismaSchoolsRepository } from './repositories/prisma.schools.repositor
       provide: SchoolsRepository,
       useClass: PrismaSchoolsRepository
     }
-  ]
+  ],
+  exports: [SchoolsRepository]
 })
 export class SchoolsModule {}

@@ -4,4 +4,5 @@ import { CreateSchoolBody } from '../dtos/create-school.dto';
 export abstract class SchoolsRepository {
   abstract create(data: CreateSchoolBody): Promise<Schools>;
   abstract getByWhatsapp(whatsappNumber: string): Promise<Schools | null>;
+  abstract getById(id: number): Promise<Schools | null>;
 }

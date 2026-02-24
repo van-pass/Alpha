@@ -4,13 +4,15 @@ import { CreateStudentBody } from './dtos/create-student.dto';
 import { StudentsRepository } from './repositories/students.repository';
 import { DriversRepository } from '../drivers/repositories/drivers.repository';
 import { ParentsRepository } from '../parents/repositories/parents.repository';
+import { SchoolsRepository } from '../schools/repositories/schools.repository';
 
 @Injectable()
 export class StudentsService {
   constructor(
     private readonly repository: StudentsRepository,
     private readonly driversRepository: DriversRepository,
-    private readonly parentsRepository: ParentsRepository
+    private readonly parentsRepository: ParentsRepository,
+    private readonly schooolsRepository: SchoolsRepository
   ) {}
 
   async register(data: CreateStudentBody) {
@@ -24,7 +26,7 @@ export class StudentsService {
       throw new ConflictException(
         'Due day must be less than or equal to the last day of the current month.',
         {
-          description: 'STS-RE03'
+          description: 'STS-RE04'
         }
       );
     }
@@ -33,7 +35,7 @@ export class StudentsService {
 
     if (!driverExists) {
       throw new NotFoundException('The provided driver does not exist.', {
-        description: 'STS-RE02'
+        description: 'STS-RE03'
       });
     }
 
@@ -41,6 +43,14 @@ export class StudentsService {
 
     if (!parentExists) {
       throw new NotFoundException('The provided parent does not exist.', {
+        description: 'STS-RE02'
+      });
+    }
+
+    const schoolExists = await this.schooolsRepository.getById(data.schoolId);
+
+    if (!schoolExists) {
+      throw new NotFoundException('The provided school does not exist.', {
         description: 'STS-RE01'
       });
     }

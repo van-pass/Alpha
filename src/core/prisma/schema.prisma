@@ -22,6 +22,8 @@ model Schools {
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  students Students[]
 }
 
 model Drivers {
@@ -70,6 +72,8 @@ model Students {
   driverId Int
   parent   Parents @relation(fields: [parentId], references: [id])
   parentId Int
+  school   Schools @relation(fields: [schoolId], references: [id])
+  schoolId Int
 }
 
 enum InvoicesStatus {

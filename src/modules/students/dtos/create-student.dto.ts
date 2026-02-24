@@ -66,4 +66,10 @@ export class CreateStudentBody {
   @IsPositive({ message: 'parent id must be a positive number' })
   @Min(1, { message: 'parent id must be greater than 0' })
   parentId: number;
+
+  @IsNotEmpty({ message: 'school id is required' })
+  @IsInt({ message: 'school id must be an integer' })
+  @IsPositive({ message: 'school id must be a positive number' })
+  @Min(1, { message: 'school id must be greater than 0' })
+  schoolId: number;
 }
