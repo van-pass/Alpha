@@ -1,11 +1,6 @@
-import { IsNotEmpty, IsNumber, IsPositive, IsString, Length, Matches } from 'class-validator';
+import { IsNotEmpty, IsString, Length, Matches } from 'class-validator';
 
 export class CreateParentBody {
-  @IsNotEmpty({ message: 'driver id is required' })
-  @IsNumber({}, { message: 'driver id must be a number' })
-  @IsPositive({ message: 'driver id must be a positive number' })
-  driverId: number;
-
   @IsNotEmpty({ message: 'parent name is required' })
   @IsString({ message: 'parent name must be a string' })
   @Length(3, 255, { message: 'parent name must be between 3 and 255 characters long' })

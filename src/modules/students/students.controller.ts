@@ -2,7 +2,10 @@ import { Body, Controller, Post, UseGuards } from '@nestjs/common';
 
 import { StudentsService } from './students.service';
 import { CreateStudentBody } from './dtos/create-student.dto';
+
 import { AuthGuard } from 'src/core/auth/guards/auth.guard';
+import { User } from 'src/shared/decorators/user.decorator';
+import type { RequestUserPayload } from 'src/core/auth/interfaces/auth-token.interface';
 
 @Controller('students')
 export class StudentsController {
@@ -10,7 +13,7 @@ export class StudentsController {
 
   @UseGuards(AuthGuard)
   @Post('register')
-  async create(@Body() body: CreateStudentBody) {
-    return await this.studentsService.register(body);
+  async create(@Body() body: CreateStudentBody, @User() user: RequestUserPayload) {
+    return await this.studentsService.register(body, user);
   }
 }

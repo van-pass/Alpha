@@ -6,6 +6,7 @@ import { CreateInvoiceBody } from './dtos/create-invoice.dto';
 import { InvoicesRepository } from './repositories/invoices.repository';
 import { StudentsRepository } from '../students/repositories/students.repository';
 import { AsaasService } from 'src/core/integrations/asaas/asaas.service';
+import type { RequestUserPayload } from 'src/core/auth/interfaces/auth-token.interface';
 
 @Injectable()
 export class InvoicesService {
@@ -15,7 +16,7 @@ export class InvoicesService {
     private readonly asaasService: AsaasService
   ) {}
 
-  async create({ studentId, parentId, driverId }: CreateInvoiceBody) {
+  async create({ studentId, parentId }: CreateInvoiceBody, user: RequestUserPayload) {
     const existingStudent = await this.studentsRepository.getById(studentId);
 
     if (!existingStudent) {
@@ -30,7 +31,7 @@ export class InvoicesService {
       });
     }
 
-    if (existingStudent.driverId !== driverId) {
+    if (existingStudent.driverId !== user.sub) {
       throw new ConflictException('The provided driver is not the student driver.', {
         description: 'INV-CR02'
       });

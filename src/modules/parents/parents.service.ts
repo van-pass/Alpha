@@ -4,6 +4,7 @@ import { ParentsRepository } from './repositories/parents.repository';
 import { CreateParentBody } from './dtos/create-parent.dto';
 import { AsaasService } from 'src/core/integrations/asaas/asaas.service';
 import { DriversRepository } from '../drivers/repositories/drivers.repository';
+import type { RequestUserPayload } from 'src/core/auth/interfaces/auth-token.interface';
 
 @Injectable()
 export class ParentsService {
@@ -13,7 +14,7 @@ export class ParentsService {
     private readonly asaasService: AsaasService
   ) {}
 
-  async register(data: CreateParentBody) {
+  async register(data: CreateParentBody, user: RequestUserPayload) {
     const existingParent = await this.repository.getByWhatsapp(data.whatsappNumber);
 
     if (existingParent) {
@@ -22,7 +23,7 @@ export class ParentsService {
       });
     }
 
-    const existingDriver = await this.driversRepository.getById(data.driverId);
+    const existingDriver = await this.driversRepository.getById(user.sub);
 
     if (!existingDriver) {
       throw new ConflictException('Driver with this id does not exist.', {
@@ -30,14 +31,13 @@ export class ParentsService {
       });
     }
 
-    const { driverId, ...parentWithoutDriverId } = data;
     let asaasCustomerId: string;
 
     const existingAsaasCustomer = await this.asaasService.getCustomer(data.cpf);
 
     if (!existingAsaasCustomer) {
       const asaasCustomer = await this.asaasService.createCustomer({
-        externalReference: `DR_${driverId}`,
+        externalReference: `DR_${user.sub}`,
         name: data.name,
         cpfCnpj: data.cpf,
         mobilePhone: data.whatsappNumber
@@ -49,7 +49,7 @@ export class ParentsService {
     }
 
     const { id, name, whatsappNumber } = await this.repository.create({
-      ...parentWithoutDriverId,
+      ...data,
       customerId: asaasCustomerId
     });
 

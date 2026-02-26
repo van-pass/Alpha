@@ -8,10 +8,13 @@ import { CreateStudentBody } from '../dtos/create-student.dto';
 export class PrismaStudentsRepository implements StudentsRepository {
   constructor(private prisma: PrismaService) {}
 
-  async create(data: CreateStudentBody) {
+  async create(driverId: number, data: CreateStudentBody) {
     try {
       return await this.prisma.students.create({
-        data
+        data: {
+          driverId,
+          ...data
+        }
       });
     } catch (error) {
       console.log(error);

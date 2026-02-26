@@ -1,7 +1,7 @@
 import { Parents } from 'src/core/prisma/generated/client';
 import { CreateParentBody } from '../dtos/create-parent.dto';
 
-export type CreateParentProps = Omit<CreateParentBody, 'driverId'> & {
+export type CreateParentProps = CreateParentBody & {
   customerId: string;
 };
 

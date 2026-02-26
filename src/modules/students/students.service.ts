@@ -5,6 +5,7 @@ import { StudentsRepository } from './repositories/students.repository';
 import { DriversRepository } from '../drivers/repositories/drivers.repository';
 import { ParentsRepository } from '../parents/repositories/parents.repository';
 import { SchoolsRepository } from '../schools/repositories/schools.repository';
+import type { RequestUserPayload } from 'src/core/auth/interfaces/auth-token.interface';
 
 @Injectable()
 export class StudentsService {
@@ -15,7 +16,7 @@ export class StudentsService {
     private readonly schooolsRepository: SchoolsRepository
   ) {}
 
-  async register(data: CreateStudentBody) {
+  async register(data: CreateStudentBody, user: RequestUserPayload) {
     const currentMonthMaxDays = new Date(
       new Date().getFullYear(),
       new Date().getMonth() + 1,
@@ -31,7 +32,7 @@ export class StudentsService {
       );
     }
 
-    const driverExists = await this.driversRepository.getById(data.driverId);
+    const driverExists = await this.driversRepository.getById(user.sub);
 
     if (!driverExists) {
       throw new NotFoundException('The provided driver does not exist.', {
@@ -55,7 +56,7 @@ export class StudentsService {
       });
     }
 
-    const { id, name, monthlyFee, dueDay } = await this.repository.create(data);
+    const { id, name, monthlyFee, dueDay } = await this.repository.create(user.sub, data);
 
     return {
       data: {
