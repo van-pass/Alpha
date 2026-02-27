@@ -1,4 +1,4 @@
-import { Body, Controller, Post, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Post, UseGuards } from '@nestjs/common';
 
 import { StudentsService } from './students.service';
 import { CreateStudentBody } from './dtos/create-student.dto';
@@ -15,5 +15,11 @@ export class StudentsController {
   @Post('register')
   async create(@Body() body: CreateStudentBody, @User() user: RequestUserPayload) {
     return await this.studentsService.register(body, user);
+  }
+
+  @UseGuards(AuthGuard)
+  @Get('list')
+  async list(@User() user: RequestUserPayload) {
+    return await this.studentsService.listAll(user);
   }
 }

@@ -67,4 +67,18 @@ export class StudentsService {
       }
     };
   }
+
+  async listAll(user: RequestUserPayload) {
+    const driverExists = await this.driversRepository.getById(user.sub);
+
+    if (!driverExists) {
+      throw new NotFoundException('The provided driver does not exist.', {
+        description: 'STS-LA01'
+      });
+    }
+
+    const students = await this.repository.listAll(user.sub);
+
+    return { data: students };
+  }
 }

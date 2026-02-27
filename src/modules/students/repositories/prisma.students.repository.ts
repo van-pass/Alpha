@@ -45,4 +45,38 @@ export class PrismaStudentsRepository implements StudentsRepository {
       });
     }
   }
+
+  async listAll(driverId: number) {
+    try {
+      return await this.prisma.students.findMany({
+        where: {
+          driverId
+        },
+        select: {
+          id: true,
+          name: true,
+          isActive: true,
+          dueDay: true,
+          monthlyFee: true,
+          parent: {
+            select: {
+              name: true
+            }
+          },
+          school: {
+            select: {
+              name: true
+            }
+          }
+        }
+      });
+    } catch (error) {
+      console.log(error);
+
+      throw new InternalServerErrorException('Unexpected error to list students.', {
+        cause: new Error(),
+        description: 'PSR-LA01'
+      });
+    }
+  }
 }
